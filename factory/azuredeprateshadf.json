@@ -1,0 +1,15 @@
+{
+	"name": "azuredeprateshadf",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "60b25ce6-f9dc-47c2-aa78-a9aeecab22da",
+		"tenantId": "b14ddd5b-8e58-4e91-991a-fc484b9a45b5"
+	}
+}

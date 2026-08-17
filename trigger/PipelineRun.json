@@ -1,0 +1,24 @@
+{
+	"name": "PipelineRun",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Run both pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2026-08-02T11:02:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

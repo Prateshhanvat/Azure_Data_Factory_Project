@@ -1,0 +1,65 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_JSON_Data",
+						"type": "DatasetReference"
+					},
+					"name": "source"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_StorageCSV",
+						"type": "DatasetReference"
+					},
+					"name": "sinkincsv"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flattenJSON"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          organic_results as (date as string, favicon as string, iso_date as timestamp, link as string, position as short, snippet as string, source as string, thumbnail as string, title as string)[],",
+				"          pagination as (current as boolean, next as string, other_pages as ({10} as string, {2} as string, {3} as string, {4} as string, {5} as string, {6} as string, {7} as string, {8} as string, {9} as string)),",
+				"          search_information as (detected_location as string, has_no_results_for as boolean, query_displayed as string, time_taken_displayed as double, total_results as short),",
+				"          search_metadata as (created_at as timestamp, html_url as string, id as string, json_url as string, parsing_time_taken as double, request_time_taken as double, request_url as string, status as string, total_time_taken as double),",
+				"          search_parameters as (device as string, engine as string, gl as string, hl as string, q as string)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> source",
+				"source foldDown(unroll(organic_results, organic_results),",
+				"     mapColumn(",
+				"          date = organic_results.date,",
+				"          favicon = organic_results.favicon,",
+				"          iso_date = organic_results.iso_date,",
+				"          link = organic_results.link,",
+				"          position = organic_results.position,",
+				"          snippet = organic_results.snippet,",
+				"          source = organic_results.source,",
+				"          thumbnail = organic_results.thumbnail,",
+				"          title = organic_results.title",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenJSON",
+				"flattenJSON sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkincsv"
+			]
+		}
+	}
+}

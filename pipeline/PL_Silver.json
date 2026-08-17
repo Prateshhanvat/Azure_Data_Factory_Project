@@ -1,0 +1,181 @@
+{
+	"name": "PL_Silver",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata of folder",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "bronze_csv_file_databricks",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ForEach folder",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata of folder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata of folder').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "NB_BronzeToSilver",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Workspace/Users/leecrysty@gmail.com/NB_BronzeToSilver",
+								"baseParameters": {
+									"FolderName": {
+										"value": "@item().name",
+										"type": "Expression"
+									},
+									"RunId": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "NB_BronzeToSilver",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Delete file from bronze",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "Get Metadata Files",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "MDMBronzeDataDelete",
+									"type": "DatasetReference",
+									"parameters": {
+										"filepath": {
+											"value": "@activity('Get Metadata Files').output.childItems[0].name",
+											"type": "Expression"
+										},
+										"folderpath": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								"logStorageSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureDataLakeStorageLinkedService",
+										"type": "LinkedServiceReference"
+									},
+									"path": "logs/bronzetosilver"
+								},
+								"enableLogging": true,
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							}
+						},
+						{
+							"name": "Get Metadata Files",
+							"type": "GetMetadata",
+							"dependsOn": [
+								{
+									"activity": "NB_BronzeToSilver",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "MDMcsvfilebronze",
+									"type": "DatasetReference",
+									"parameters": {
+										"folderpath": "@item().name"
+									}
+								},
+								"fieldList": [
+									"childItems"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-08-10T17:37:51Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

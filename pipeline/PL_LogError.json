@@ -1,0 +1,29 @@
+{
+	"name": "PL_LogError",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable log",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LogError",
+					"value": "Error is logged from ."
+				}
+			}
+		],
+		"variables": {
+			"LogError": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-08-07T15:38:25Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
