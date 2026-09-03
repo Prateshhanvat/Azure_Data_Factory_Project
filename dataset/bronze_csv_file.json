@@ -2,7 +2,7 @@
 	"name": "bronze_csv_file",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorageLinkedService",
+			"referenceName": "AzureDataLakeStoragePratesh",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
