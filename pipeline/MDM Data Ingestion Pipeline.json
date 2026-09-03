@@ -300,7 +300,7 @@
 											},
 											"logStorageSettings": {
 												"linkedServiceName": {
-													"referenceName": "AzureDataLakeStorageLinkedService",
+													"referenceName": "AzureDataLakeStoragePratesh",
 													"type": "LinkedServiceReference"
 												},
 												"path": "logs/ingestion"
