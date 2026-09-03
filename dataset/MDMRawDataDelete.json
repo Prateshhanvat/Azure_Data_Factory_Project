@@ -2,7 +2,7 @@
 	"name": "MDMRawDataDelete",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorageLinkedService",
+			"referenceName": "AzureDataLakeStoragePratesh",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
