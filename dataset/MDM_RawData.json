@@ -2,7 +2,7 @@
 	"name": "MDM_RawData",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorageLinkedService",
+			"referenceName": "AzureDataLakeStoragePratesh",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
