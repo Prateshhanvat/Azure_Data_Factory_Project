@@ -1,0 +1,12 @@
+{
+	"name": "AzureDataLakeStoragePratesh",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://prateshstoragesadls.dfs.core.windows.net/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDI3NzQ2Q0Q3LTNCOTUtNEZFNy04ODkwLTdFNTA0REQxMEMwMF9jNTQzNWFkZS0xMTM3LTQ0NjYtYTk5Ny1mNDlkYWJiNjNlZDgiDQp9"
+		}
+	}
+}
